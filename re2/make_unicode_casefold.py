@@ -114,10 +114,10 @@ def main():
   seen = {}
   for c in casegroups:
     if len(c) > MaxCasefoldGroup:
-      raise unicode.Error("casefold group too long: %s" % (c,))
+      raise unicode.Error("casefold group too long: {0!s}".format(c))
     for i in range(len(c)):
       if c[i-1] in seen:
-        raise unicode.Error("bad casegroups %d -> %d" % (c[i-1], c[i]))
+        raise unicode.Error("bad casegroups {0:d} -> {1:d}".format(c[i-1], c[i]))
       seen[c[i-1]] = True
       foldpairs.append([c[i-1], c[i]])
 
@@ -130,12 +130,12 @@ def main():
   def printpairs(name, foldpairs):
     foldpairs.sort()
     foldranges = _MakeRanges(foldpairs)
-    print "// %d groups, %d pairs, %d ranges" % (len(casegroups), len(foldpairs), len(foldranges))
-    print "const CaseFold unicode_%s[] = {" % (name,)
+    print "// {0:d} groups, {1:d} pairs, {2:d} ranges".format(len(casegroups), len(foldpairs), len(foldranges))
+    print "const CaseFold unicode_{0!s}[] = {{".format(name)
     for lo, hi, delta in foldranges:
-      print "\t{ %d, %d, %s }," % (lo, hi, delta)
+      print "\t{{ {0:d}, {1:d}, {2!s} }},".format(lo, hi, delta)
     print "};"
-    print "const int num_unicode_%s = %d;" % (name, len(foldranges),)
+    print "const int num_unicode_{0!s} = {1:d};".format(name, len(foldranges))
     print ""
 
   print _header
